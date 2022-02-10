@@ -13,18 +13,57 @@ WORK_SEC=WORK_MIN*60
 SHORT_BREAK_SEC=SHORT_BREAK_MIN*60
 LONG_BREAK_SEC=LONG_BREAK_MIN*60
 
-# ---------------------------- TIMER RESET ------------------------------- # 
+timer=None
 
-# ---------------------------- TIMER MECHANISM ------------------------------- # 
+# ---------------------------- TIMER RESET ------------------------------- #
+
+# ---------------------------- TIMER MECHANISM ------------------------------- #
+
+time_delay=10
+
+reps=0
 
 def start_timer():
-    count_down(5)
+        global reps
+        reps+=1
 
-# ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
+
+        if reps==8 :
+
+            count_down(LONG_BREAK_SEC)
+            text.config(text="Break", fg=GREEN, bg=YELLOW,font=("Courier", 24, "bold"))
+
+        elif reps % 2 == 0:
+                count_down(SHORT_BREAK_SEC)
+                text.config(text="Break", fg=GREEN, bg=YELLOW,font=("Courier", 24, "bold"))
+        else:
+
+                count_down(WORK_SEC)
+                text.config(text="Work", fg=RED, bg=YELLOW, font=("Courier", 24, "bold"))
+
+
+
+        print(reps)
+
+
+# ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 def count_down(count):
-    canvas.itemconfig(text_timer, text=count)
+    global timer
+    x=count//60
+    y=count%60
+    if y < 10:
+        y="0"+str(y)
+    z=str(x)+":"+str(y)
+    canvas.itemconfig(text_timer, text=z)
     if count > 0:
-        window.after(1000,count_down, count-1)
+        timer=window.after(time_delay,count_down, count-1)
+    else:
+        start_timer()
+        mark=""
+        work_session=reps%2
+        for _ in range (0, work_session):
+            mark+="✔"
+        check_mark.config(text=mark)
 # ---------------------------- UI SETUP ------------------------------- #
 
 def update_label(x,y):
@@ -35,20 +74,13 @@ def update_label(x,y):
 
 
 
-# def StartTimer():
- #   for repeat in range (0,4):
- #       for looping1 in range (0,WORK_SEC):
- #           time.sleep(1)
- #           update_label( WORK_SEC, looping1)
- #       for looping2 in range (0,SHORT_BREAK_SEC):
- #           time.sleep(1)
- #           update_label( SHORT_BREAK_SEC, looping2)
- #   for looping3 in range(0, LONG_BREAK_SEC):
- #       time.sleep(1)
- #       update_label(LONG_BREAK_SEC, looping3)
-
 def ResetTimer():
-    pass
+    window.after_cancel(timer)
+    canvas.itemconfig(text_timer, text="00:00")
+    text.config(text="Timer")
+    check_mark.config(text="")
+    global reps
+    reps=0
 
 window=Tk()
 window.title("Pomodoro")
@@ -66,9 +98,10 @@ button1=Button(text="Start",command=start_timer)
 button1.grid(column=0,row=3)
 button2=Button(text="Reset",command=ResetTimer)
 button2.grid(column=3,row=3)
-text=Label(text="Timer", fg=GREEN, font=("Courier",24,"bold"))
-text=Label(text="Timer", fg=GREEN, font=("Courier",24,"bold"))
-text.grid(column=1, row=0)
+text=Label(text="Timer", fg=GREEN, bg=YELLOW, font=("Courier",24,"bold"))
 
+text.grid(column=1, row=0)
+check_mark=Label(fg=GREEN, bg=YELLOW)
+check_mark.grid(column=1,row=4)
 
 window.mainloop()
