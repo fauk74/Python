@@ -1,16 +1,23 @@
 from tkinter import *
 from tkinter import messagebox
-import time
+import random
+
 # ---------------------------- CONSTANTS ------------------------------- #
-PINK = "#e2979c"
-RED = "#e7305b"
-GREEN = "#9bdeac"
-YELLOW = "#f7f5dd"
-FONT_NAME = "Courier"
 
-
+characters="ABCDEFGHILMNOPQRSTUVZWYXKJabcdefghilmnopqrstuvzyxwkj1234567890!£$%&*_-°"
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+
+
+def generate():
+    password=""
+    for _ in range (0,10):
+        b=random.choice(characters)
+        password+=b
+
+    print(password)
+    password_entry.delete(0,END)
+    password_entry.insert(0,string=password)
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
@@ -32,6 +39,8 @@ def add_pass():
                     print(mail_text,website_text,pass_text)
                     website_text=website_entry.delete(0,31)
                     pass_text=password_entry.delete(0,31)
+                    
+                    
 # ---------------------------- UI SETUP ------------------------------- #
 
 
@@ -70,7 +79,7 @@ website_entry.focus()
 
 
 #Buttons
-generate_password_button=Button(text="Generate Password")
+generate_password_button=Button(text="Generate Password", command=generate)
 generate_password_button.grid(row=4,column=2)
 
 button1=Button(text="Add", width=35, command=add_pass)
