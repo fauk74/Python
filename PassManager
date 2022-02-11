@@ -1,29 +1,30 @@
 from tkinter import *
 from tkinter import messagebox
 import random
-
+import pyperclip
 # ---------------------------- CONSTANTS ------------------------------- #
+PINK = "#e2979c"
+RED = "#e7305b"
+GREEN = "#9bdeac"
+YELLOW = "#f7f5dd"
+FONT_NAME = "Courier"
 
-characters="ABCDEFGHILMNOPQRSTUVZWYXKJabcdefghilmnopqrstuvzyxwkj1234567890!£$%&*_-°"
+
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
-
+characters="ABCDEFGHILMNOPQRSTUVZWYXKJabcdefghilmnopqrstuvzyxwkj1234567890!£$%&/*_-°()=@"
 def generate():
     password=""
-    for _ in range (0,10):
-        b=random.choice(characters)
-        password+=b
-
+    password=password.join([random.choice(characters) for _ in range (0,10) ])
     print(password)
     password_entry.delete(0,END)
     password_entry.insert(0,string=password)
-
+    pyperclip.copy(password)
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 def add_pass():
-   is_ok=False
-   while is_ok==False:
+
         mail_text=email_entry.get()
         website_text=website_entry.get()
         pass_text=password_entry.get()
@@ -39,8 +40,8 @@ def add_pass():
                     print(mail_text,website_text,pass_text)
                     website_text=website_entry.delete(0,31)
                     pass_text=password_entry.delete(0,31)
-                    
-                    
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 
