@@ -17,11 +17,14 @@ def search_pass():
     try:
         with open("data.json", mode="r") as file:
             data=json.load(file)
-            stringa=data[website_text]
-            emaila=stringa["email"]
-            passworda=stringa["password"]
-            messagebox.showwarning(title="Result", message=f"username: {emaila} \n password: {passworda}")
-            pyperclip.copy(password)
+            if website_text in data:
+
+                emaila=data[website_text]["email"]
+                passworda=data[website_text]["password"]
+                messagebox.showwarning(title="Result", message=f"username: {emaila} \n password: {passworda}")
+                pyperclip.copy(password)
+            else:
+                messagebox.showwarning(title="Error", message=f"Website not found in data.json")
     except FileNotFoundError:
         messagebox.showwarning(title="Error", message="File data.json not found")
 
