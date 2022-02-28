@@ -2,7 +2,7 @@ import smtplib
 import pandas as pd
 import random
 import datetime as dt
-
+import json
 
 friends=pd.read_csv("list_of_friends.csv")
 # let's build a dictionary with name : month , day , mail
@@ -13,6 +13,10 @@ diz={}
 #print(friends.columns)
 
 dict_friends= friends.to_dict(orient="records")
+
+with open("list_of_friends.json","w") as file:
+    json.dump(dict_friends, file, indent=4)
+
 
 #print(dict_friends[0]['Name'])
 
@@ -38,8 +42,8 @@ print(list_to_send)
 list_of_letters=["wishes1.txt","wishes2.txt","wishes3.txt"]
 
 
-my_mail='XXXXX'
-password='XXXXX'
+my_mail='renda.isabella2@gmail.com'
+password='arianna10'
 
 connection=smtplib.SMTP("smtp.gmail.com")
 connection.starttls()
